@@ -1,0 +1,11 @@
+package com.project.urlshortener.exception;
+
+public class UrlNotFoundException extends Exception {
+	private static final long serialVersionUID = 1L;
+	public UrlNotFoundException() {
+		super();
+	}
+	public UrlNotFoundException(String msg) {
+		super(msg);
+	}
+}

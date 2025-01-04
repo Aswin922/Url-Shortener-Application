@@ -1,0 +1,80 @@
+/* DisplayUrls Table Styling */
+/* Scrollable Container for Table */
+.urls-section {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: 100%; /* Ensures the section height is consistent */
+}
+
+.urls-section .table-container {
+    flex: 1;
+    overflow-y: auto; /* Adds vertical scroll for overflowing content */
+    margin-top: 10px; /* Spacing between heading and table */
+    border: 1px solid #ddd; /* Optional border for the scroll area */
+    border-radius: 4px;
+    background-color: #ffffff;
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    table-layout: fixed; /* Prevents columns from expanding beyond container */
+}
+
+thead th {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+tbody td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    word-wrap: break-word;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tbody tr:hover {
+    background-color: #f1f1f1;
+    transition: background-color 0.3s ease;
+}
+
+button {
+    background-color: #ff4d4f;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #e33d3f;
+}
+
+/* Scrollbar Customization */
+.table-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 4px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}

@@ -1,0 +1,81 @@
+package com.project.urlshortener.service;
+
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import com.project.urlshortener.dto.UrlDto;
+import com.project.urlshortener.exception.UrlNotFoundException;
+import com.project.urlshortener.model.Url;
+import com.project.urlshortener.repository.UrlRepository;
+import com.google.common.hash.Hashing;
+import com.google.common.hash.HashFunction;
+
+@Service
+public class UrlShortenerService implements UrlShortenerServiceInterface{
+	
+	@Autowired
+    private UrlRepository repository;
+
+	@Override
+	public UrlDto addUrl(UrlDto urlDto) {
+		Url url = repository.findByLongUrl(urlDto.getLongUrl());
+		if(url!=null) {
+			urlDto.setId(url.getId());
+			urlDto.setLongUrl(url.getLongUrl());
+			urlDto.setShortKey(url.getShortKey());
+			urlDto.setClickCount(url.getClickCount());
+		}
+		else {
+			url =new Url();
+			url.setId(urlDto.getId());
+			url.setLongUrl(urlDto.getLongUrl());
+			url.setShortKey(shortenUrl(urlDto.getLongUrl()));
+			url.setClickCount(0);
+		}
+		return urlDto;
+	}
+	
+	@Override
+	public String updateClick(String shortKey) throws UrlNotFoundException{
+		Url url = repository.findByShortKey(shortKey);
+		if(url==null) {
+			new UrlNotFoundException("Service.URL_NOT_FOUND");
+		}
+		url.setClickCount(url.getClickCount()+1);
+		repository.save(url);
+		return url.getLongUrl();
+	}
+	
+	@Override
+	public void deleteUrl(long id) throws UrlNotFoundException{
+		Url url=repository.findById(id).orElseThrow(()->new UrlNotFoundException("Service.URL_NOT_FOUND"));
+		repository.delete(url);
+	}
+	
+	@Override
+	public List<UrlDto> viewAllUrls(){
+		List<Url> list=(List<Url>) repository.findAll();
+		List<UrlDto> urlList = new ArrayList<>();
+		list.forEach(url->{
+			UrlDto urlDto= new UrlDto();
+			urlDto.setId(url.getId());
+			urlDto.setLongUrl(url.getLongUrl());
+			urlDto.setShortKey(url.getShortKey());
+			urlDto.setClickCount(url.getClickCount());
+            urlList.add(urlDto);
+		});
+		return urlList;
+	}
+
+	public String shortenUrl(String url) {
+		
+		HashFunction HASH_FUNCTION = Hashing.goodFastHash(32);
+        String key = "url-short/" + HASH_FUNCTION.hashString(url, StandardCharsets.UTF_8).toString();
+
+        return key;
+    }
+	
+}
+

@@ -1,0 +1,21 @@
+package com.project.urlshortener.model;
+
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
+public class Url {
+	
+	    @Id
+	    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	    private Long id;
+	    private String longUrl;
+	    private String shortKey;
+	    private int clickCount;
+	    private LocalDateTime createdAt;
+
+}

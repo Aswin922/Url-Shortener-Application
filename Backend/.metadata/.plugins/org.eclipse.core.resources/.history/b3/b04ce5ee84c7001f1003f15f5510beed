@@ -1,0 +1,65 @@
+package com.project.urlshortener.service;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.project.urlshortener.dto.UrlDto;
+import com.project.urlshortener.exception.UrlNotFoundException;
+import com.project.urlshortener.model.Url;
+import com.project.urlshortener.repository.UrlRepository;
+
+@Service
+public class UrlShortenerService implements UrlShortenerServiceInterface{
+	
+	@Autowired
+    private UrlRepository repository;
+
+	@Override
+	public UrlDto addUrl(UrlDto urlDto) {
+		Url url =new Url();
+		url.setId(urlDto.getId());
+		url.setLongUrl(urlDto.getLongUrl());
+		url.setShortKey(urlDto.getShortKey());
+		url.setClickCount(0);
+		return urlDto;
+	}
+	
+	@Override
+	public String updateClick(String shortKey) throws UrlNotFoundException{
+		Url url = repository.findByShortKey(shortKey).orElseThrow(()->new UrlNotFoundException("Service.URL_NOT_FOUND"));
+		url.setClickCount(url.getClickCount()+1);
+		repository.save(url);
+		return url.getLongUrl();
+	}
+	
+	@Override
+	public void deleteUrl(long id) throws UrlNotFoundException{
+		Url url=repository.findById(id).orElseThrow(()->new UrlNotFoundException("Service.URL_NOT_FOUND"));
+		repository.delete(url);
+	}
+	
+	@Override
+	public List<UrlDto> viewAllUrls(){
+		List<Url> list=(List<Url>) repository.findAll();
+		List<UrlDto> urlList = new ArrayList<>();
+		list.forEach(url->{
+			UrlDto urlDto= new UrlDto();
+			urlDto.setId(url.getId());
+			urlDto.setLongUrl(url.getLongUrl());
+			urlDto.setShortKey(url.getShortKey());
+			urlDto.setClickCount(url.getClickCount());
+            urlList.add(urlDto);
+		});
+		return urlList;
+	}
+
+	/*
+	 * private String generateShortKey() { return
+	 * RandomStringUtils.randomAlphanumeric(6); }
+	 */
+}
+

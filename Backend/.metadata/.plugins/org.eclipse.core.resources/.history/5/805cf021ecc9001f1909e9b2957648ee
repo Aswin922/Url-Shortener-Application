@@ -1,0 +1,5 @@
+spring.application.name=urlshortener
+spring.data.mongodb.uri=mongodb+srv://root:root@urlshortener.3dawh.mongodb.net/?retryWrites=true&w=majority&appName=UrlShortener
+spring.data.mongodb.database=URL_DB
+spring.data.mongodb.connection-timeout=3000
+spring.data.mongodb.socket-timeout=3000

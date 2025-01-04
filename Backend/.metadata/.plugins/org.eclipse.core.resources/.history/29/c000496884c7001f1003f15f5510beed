@@ -1,0 +1,51 @@
+package com.project.urlshortener.service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.project.urlshortener.dto.UrlDto;
+import com.project.urlshortener.exception.UrlNotFoundException;
+import com.project.urlshortener.model.Url;
+import com.project.urlshortener.repository.UrlRepository;
+
+@Service
+public class UrlShortenerService implements UrlShortenerServiceInterface{
+	
+	@Autowired
+    private UrlRepository repository;
+
+	@Override
+	public UrlDto addFlat(UrlDto url) {
+		return url;
+	}
+	
+	@Override
+	public UrlDto updateFlat(UrlDto url,int id) throws UrlNotFoundException{
+		return url;
+	}
+	
+	@Override
+	public void deleteFlat(int id) throws UrlNotFoundException{
+		
+	}
+	
+	@Override
+	public UrlDto viewFlat(int id)throws UrlNotFoundException{
+		return null;
+		
+	}
+	
+	@Override
+	public List<UrlDto> viewAllFlat(){
+		return null;
+		
+	}
+
+    private String generateShortKey() {
+        return RandomStringUtils.randomAlphanumeric(6);
+    }
+}
+

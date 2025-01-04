@@ -1,0 +1,10 @@
+package com.project.urlshortener.repository;
+
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
+
+public class UrlRepository extends CrudRepository <Url, Long> {
+    Optional<Url> findByShortKey(String shortKey);
+    Optional<Url> findByLongUrl(String longUrl);
+}

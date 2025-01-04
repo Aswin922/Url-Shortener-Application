@@ -1,0 +1,5 @@
+package com.project.urlshortener.controller;
+
+public class UrlShortenerController {
+
+}

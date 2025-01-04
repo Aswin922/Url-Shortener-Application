@@ -1,0 +1,16 @@
+package com.project.urlshortener.repository;
+
+import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
+import org.springframework.data.mongodb.repository.Update;
+import org.springframework.stereotype.Repository;
+import com.project.urlshortener.model.Url;
+
+@Repository
+public interface UrlRepository extends MongoRepository<Url, Long> {
+	Url findByShortKey(String shortKey);
+	Url findByLongUrl(String longUrl);
+	@Query("{'shortKey' : ?0}")
+    @Update("{'$set': {'clickCount': ?1}}")
+	Integer updateClickCount(String shortKey, int clickCount);
+}

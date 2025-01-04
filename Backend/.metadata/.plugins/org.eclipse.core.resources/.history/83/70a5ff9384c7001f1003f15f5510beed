@@ -1,0 +1,15 @@
+package com.project.urlshortener.service;
+
+import java.util.List;
+import com.project.urlshortener.dto.UrlDto;
+import com.project.urlshortener.exception.UrlNotFoundException;
+
+public interface UrlShortenerServiceInterface {
+	
+	public UrlDto addFlat(UrlDto url);  
+	public UrlDto updateFlat(UrlDto url,int id) throws UrlNotFoundException;
+	public void deleteFlat(int id) throws UrlNotFoundException; 
+	public UrlDto viewFlat(int id)throws UrlNotFoundException;
+	public List<UrlDto> viewAllFlat();
+	
+}

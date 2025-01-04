@@ -1,0 +1,143 @@
+package com.project.urlshortener;
+
+import com.project.urlshortener.controller.UrlShortenerController;
+import com.project.urlshortener.dto.UrlDto;
+import com.project.urlshortener.exception.UrlNotFoundException;
+import com.project.urlshortener.model.Url;
+import com.project.urlshortener.service.UrlShortenerService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+
+import java.util.Collections;
+import java.util.List;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.*;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+
+@WebMvcTest(UrlShortenerController.class)
+class UrlshortenerApplicationTests {
+
+    private MockMvc mockMvc;
+
+    @Mock
+    private UrlShortenerService urlShortenerService;
+
+    @InjectMocks
+    private UrlShortenerController urlShortenerController;
+
+    @BeforeEach
+    void setUp() {
+        mockMvc = MockMvcBuilders.standaloneSetup(urlShortenerController).build();
+    }
+
+    @Test
+    void contextLoads() {
+        // Just checking if context loads
+    }
+
+    @Test
+    void testAddUrl_Success() throws Exception {
+        UrlDto urlDto = new UrlDto();
+        urlDto.setLongUrl("http://example.com");
+
+        UrlDto responseDto = new UrlDto();
+        responseDto.setShortKey("urls-12345");
+        responseDto.setLongUrl("http://example.com");
+
+        when(urlShortenerService.addUrl(any(UrlDto.class))).thenReturn(responseDto);
+
+        mockMvc.perform(post("/addurl")
+                        .contentType("application/json")
+                        .content("{\"longUrl\":\"http://example.com\"}"))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.shortKey").value("urls-12345"))
+                .andExpect(jsonPath("$.longUrl").value("http://example.com"));
+
+        verify(urlShortenerService, times(1)).addUrl(any(UrlDto.class));
+    }
+
+    @Test
+    void testUpdateUrl_Success() throws Exception {
+        String shortKey = "urls-12345";
+        String longUrl = "http://example.com";
+
+        when(urlShortenerService.updateClick(anyString())).thenReturn(longUrl);
+
+        mockMvc.perform(put("/updateurl/{shortKey}", shortKey))
+                .andExpect(status().isOk())
+                .andExpect(content().string(longUrl));
+
+        verify(urlShortenerService, times(1)).updateClick(shortKey);
+    }
+
+    @Test
+    void testUpdateUrl_NotFound() throws Exception {
+        String shortKey = "urls-12345";
+        String errorMessage = "Short key not found: " + shortKey;
+
+        when(urlShortenerService.updateClick(anyString())).thenThrow(new UrlNotFoundException(errorMessage));
+
+        mockMvc.perform(put("/updateurl/{shortKey}", shortKey))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string(errorMessage));
+
+        verify(urlShortenerService, times(1)).updateClick(shortKey);
+    }
+
+    @Test
+    void testDeleteUrl_Success() throws Exception {
+        String shortKey = "urls-12345";
+
+        doNothing().when(urlShortenerService).deleteUrl(anyString());
+
+        mockMvc.perform(delete("/deleteurl/{shortKey}", shortKey))
+                .andExpect(status().isOk())
+                .andExpect(content().string("URL deleted successfully"));
+
+        verify(urlShortenerService, times(1)).deleteUrl(shortKey);
+    }
+
+    @Test
+    void testDeleteUrl_NotFound() throws Exception {
+        String shortKey = "urls-12345";
+        String errorMessage = "Short key not found: " + shortKey;
+
+        doThrow(new UrlNotFoundException(errorMessage)).when(urlShortenerService).deleteUrl(anyString());
+
+        mockMvc.perform(delete("/deleteurl/{shortKey}", shortKey))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string(errorMessage));
+
+        verify(urlShortenerService, times(1)).deleteUrl(shortKey);
+    }
+
+    @Test
+    void testViewAllUrls_Success() throws Exception {
+        UrlDto urlDto = new UrlDto();
+        urlDto.setLongUrl("http://example.com");
+        urlDto.setShortKey("urls-12345");
+
+        List<UrlDto> urlList = Collections.singletonList(urlDto);
+
+        when(urlShortenerService.viewAllUrls()).thenReturn(urlList);
+
+        mockMvc.perform(get("/viewallurl"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].shortKey").value("urls-12345"))
+                .andExpect(jsonPath("$[0].longUrl").value("http://example.com"));
+
+        verify(urlShortenerService, times(1)).viewAllUrls();
+    }
+}

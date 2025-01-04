@@ -1,0 +1,71 @@
+package com.project.urlshortener.controller;
+
+import java.io.IOException;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.project.urlshortener.dto.UrlDto;
+import com.project.urlshortener.exception.UrlNotFoundException;
+import com.project.urlshortener.service.UrlShortenerService;
+
+import jakarta.servlet.http.HttpServletResponse;
+import springfox.documentation.annotations.ApiIgnore;
+
+@RestController
+@RequestMapping(value = "/")
+@CrossOrigin(origins="http://localhost:3000")
+@Validated
+public class UrlShortenerController {
+
+	@Autowired
+    private UrlShortenerService urlService;
+
+    @Autowired
+    private Environment environment;
+    
+	/*
+	 * @ApiIgnore
+	 * 
+	 * @RequestMapping(value="/") public void redirect(HttpServletResponse response)
+	 * throws IOException { response.sendRedirect("/swagger-ui.html"); }
+	 */
+    
+    @PostMapping(value = "/addurl")
+    public ResponseEntity<UrlDto> addUrl(@RequestBody UrlDto url) {
+        return new ResponseEntity<>(urlService.addUrl(url), HttpStatus.CREATED);
+    }
+    
+    @PutMapping("/updateurl/{shortKey}")
+    public ResponseEntity<String> updateUrl(@RequestBody String shortKey) throws UrlNotFoundException {
+        urlService.updateClick(shortKey);
+        String successMessage = environment.getProperty("API.UPDATE_SUCCESS");
+        return new ResponseEntity<>(successMessage, HttpStatus.OK);
+    }
+    
+    @DeleteMapping(value = "/deleteurl/{urlId}")
+    public ResponseEntity<String> deleteUrl(@PathVariable Integer urlId) throws UrlNotFoundException {
+        urlService.deleteUrl(urlId);
+        String successMessage = environment.getProperty("API.DELETE_SUCCESS");
+        return new ResponseEntity<>(successMessage, HttpStatus.OK);
+    }
+    
+    @GetMapping(value = "/viewallurl")
+    public ResponseEntity<List<UrlDto>> viewAllUrl() {
+        List<UrlDto> urlList = urlService.viewAllUrls();
+        return new ResponseEntity<>(urlList, HttpStatus.OK);
+    }
+}

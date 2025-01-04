@@ -1,0 +1,5 @@
+package com.project.urlshortener.exception;
+
+public class UrlNotFoundException {
+
+}

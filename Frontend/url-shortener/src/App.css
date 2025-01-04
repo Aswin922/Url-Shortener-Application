@@ -1,0 +1,149 @@
+/* General Styling */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+/* App Container */
+.App {
+  text-align: center;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.App-header {
+  background-color: #007bff;
+  padding: 10px 20px;
+  color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+
+.App-header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+/* Main Layout */
+.App-main {
+  display: flex;
+  height: calc(100vh - 60px); /* Full height minus header */
+  padding: 10px;
+  box-sizing: border-box;
+  overflow: auto; /* Allow scrolling if content overflows */
+}
+
+/* Left and Right Panes */
+.left-pane,
+.right-pane {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.left-pane {
+  margin-right: 10px;
+}
+
+.right-pane {
+  margin-left: 10px;
+  overflow-y: auto; /* Allow vertical scrolling within the right pane */
+}
+
+/* Feature Sections */
+.feature-section {
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 10px;
+  height: 48%; /* Divide evenly for two sections in left pane */
+  box-sizing: border-box;
+}
+
+.urls-section {
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 10px;
+  height: 98%; /* Divide evenly for two sections in left pane */
+  box-sizing: border-box;
+}
+
+.feature-section h2 {
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+  color: #007bff;
+  text-align: left;
+}
+
+/* Button Styling */
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+/* Error and Success Messages */
+.error-text,
+.success-message {
+  color: red;
+  font-size: 1rem;
+  margin-top: 10px;
+}
+
+.success-message {
+  color: green;
+}
+
+/* Loading Spinner */
+.loading-message {
+  font-size: 1.2rem;
+  color: #007bff;
+  margin-top: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .App-main {
+      flex-direction: column;
+  }
+
+  .left-pane,
+  .right-pane {
+      flex: none;
+      width: 100%;
+      margin: 0;
+  }
+
+  .feature-section {
+      height: auto;
+  }
+
+  /* Adjust button styles for smaller screens */
+  button {
+    width: 100%;
+  }
+}

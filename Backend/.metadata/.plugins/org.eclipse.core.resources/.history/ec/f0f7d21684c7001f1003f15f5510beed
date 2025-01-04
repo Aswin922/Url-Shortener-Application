@@ -1,0 +1,10 @@
+package com.project.urlshortener.repository;
+
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+import com.project.urlshortener.model.Url;
+
+@Repository
+public interface UrlRepository extends CrudRepository<Url, Long> {
+	
+}

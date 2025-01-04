@@ -1,0 +1,7 @@
+spring.application.name=urlshortener
+spring:
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: URL_DB

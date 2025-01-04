@@ -1,0 +1,16 @@
+package com.project.urlshortener.service;
+
+import java.util.ArrayList;
+import java.util.List;
+import com.project.urlshortener.dto.UrlDto;
+import com.project.urlshortener.exception.UrlNotFoundException;
+import com.project.urlshortener.model.Url;
+
+public interface UrlShortenerServiceInterface {
+
+	public UrlDto addUrl(UrlDto urlDto);
+	public String updateClick(String shortKey) throws UrlNotFoundException;
+	public void deleteUrl(long id) throws UrlNotFoundException;
+	public List<UrlDto> viewAllUrls();
+	
+}
