@@ -5505,3 +5505,7 @@ org.eclipse.core.runtime.CoreException: Could not resolve artifact org.webjars:s
 2025-01-04 11:19:34,122 [Worker-3: Launching urlshortener] INFO  o.eclipse.m2e.core.internal.Bundles - 	Entry: C:\Users\aswnair\.p2\pool\plugins\com.google.guava.failureaccess_1.0.2.jar
 2025-01-04 11:19:34,127 [Worker-3: Launching urlshortener] INFO  o.e.m.i.launch.MavenLaunchDelegate - Run build in "C:\Train\Url_Shortener\Backend\urlshortener":
 2025-01-04 11:19:34,130 [Worker-3: Launching urlshortener] INFO  o.e.m.i.launch.MavenLaunchDelegate -  mvn  -B -Dstyle.color=always clean install
+2025-01-04 19:55:38,876 [Worker-2: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is out-of-date. Trying to update.
+2025-01-04 19:55:47,445 [Worker-9: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2025-01-04 19:55:47,476 [Worker-9: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 0 resource from src\main\resources to target\classes
+2025-01-04 19:55:47,500 [Worker-9: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\Train\Url_Shortener\Backend\urlshortener\src\test\resources
